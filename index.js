@@ -75,11 +75,13 @@ app
   })
 
 app.get('/api/shorturl/:input', (req, res) => {
-  let { input } = req.params;
+  let { input: inputShort } = req.params;
   urlModel
-        .findOne({ short: input }, (error, result) => {
+        .findOne({ short: inputShort }, (error, result) => {
           if(!error && result) {
-            
+            res.redirect(result.original)
+          } else {
+            res.json({ error: 'URL not found in the database'})
           }
         })
 })
