@@ -39,13 +39,13 @@ const responseObject = {}
 app
   .use(bodyParser.urlencoded({ extended: false }))
   .post('/api/shorturl', (req, res) => {
-    const { url: inputUrl } = req.body
-    responseObject['original_url'] = inputUrl;
+    const { url } = req.body
+    responseObject['original_url'] = url;
     let inputShort = 1
 
     let urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi)
-    if (!inputUrl.match(urlRegex)) {
-      res.json({ error: 'invalid url'})
+    if (!url.match(urlRegex)) {
+      return res.json({ error: 'invalid url' })
     }
     urlModel
           .findOne({})
@@ -56,13 +56,13 @@ app
             }
             if (!error) {
               urlModel.findOneAndUpdate(
-                { original: inputUrl },
-                { original: inputUrl, short: inputShort },
+                { original: url },
+                { original: url, short: inputShort },
                 { new: true, upsert: true },
                 (error, savedUrl) => {
                   if (!error) {
                     responseObject['short_url'] = savedUrl.short;
-                    res.json(responseObject);
+                    return res.json(responseObject);
                     console.log('log message')
                   }
                 }
@@ -70,8 +70,8 @@ app
             }
           })
 
-    //console.log(inputUrl)
-    //let test = /https?:\/\/(www)?\.?.+\..+/gi.test(inputUrl)
+    //console.log(url)
+    //let test = /https?:\/\/(www)?\.?.+\..+/gi.test(url)
   })
 
 app.get('/api/shorturl/:input', (req, res) => {
