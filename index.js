@@ -33,26 +33,56 @@ let urlSchema = new mongoose.Schema({
   short: Number
 })
 
-let Url = mongoose.model('Url', urlSchema)
+let urlModel = mongoose.model('URL', urlSchema)
 //console.log(uri)
+const responseObject = {}
 app
   .use(bodyParser.urlencoded({ extended: false }))
   .post('/api/shorturl', (req, res) => {
-    const { url } = req.body
-    console.log(url)
-    let test = /https?:\/\/(www)?\.?.+\..+/gi.test(url)
-    console.log(test)
-    if (test) {
-      res.json({
-        original_url: url,
-      })
-    } else {
-      res.json({
-        error: 'Invalid Url'
-      })
+    const { url: inputUrl } = req.body
+    responseObject['original_url'] = inputUrl;
+    let inputShort = 1
+
+    let urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi)
+    if (!urlRegex.test(inputUrl)) {
+      res.json({ error: 'Invalid URL'})
     }
+    urlModel
+          .findOne({})
+          .sort({ short: 'desc' })
+          .exec((error, result) => {
+            if (!error && result != undefined) {
+              inputShort = result.short + 1;
+            }
+            if (!error) {
+              urlModel.findOneAndUpdate(
+                { original: inputUrl },
+                { original: inputUrl, short: inputShort },
+                { new: true, upsert: true },
+                (error, savedUrl) => {
+                  if (!error) {
+                    responseObject['short_url'] = savedUrl.short;
+                    res.json(responseObject);
+                    console.log('log message')
+                  }
+                }
+              )
+            }
+          })
+
+    //console.log(inputUrl)
+    //let test = /https?:\/\/(www)?\.?.+\..+/gi.test(inputUrl)
   })
 
+app.get('/api/shorturl/:input', (req, res) => {
+  let { input } = req.params;
+  urlModel
+        .findOne({ short: input }, (error, result) => {
+          if(!error && result) {
+            
+          }
+        })
+})
 app.listen(port, function() {
   console.log(`Listening on port ${port}`);
 });
