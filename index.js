@@ -1,3 +1,4 @@
+'use strict';
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -43,9 +44,10 @@ app
     responseObject['original_url'] = url;
     let inputShort = 1
 
-    let urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi)
-    if (!url.match(urlRegex)) {
-      return res.json({ error: 'invalid url' })
+    
+    if (!url.match(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi)) {
+      res.json({ error: 'invalid url' })
+      return
     }
     urlModel
           .findOne({})
