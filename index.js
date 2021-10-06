@@ -44,7 +44,7 @@ app
     let inputShort = 1
 
     let urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi)
-    if (!urlRegex.test(inputUrl)) {
+    if (!inputUrl.match(urlRegex)) {
       res.json({ error: 'invalid url'})
     }
     urlModel
