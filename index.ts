@@ -15,13 +15,22 @@ app.use(cors());
 //app.use('/public', express.static(`${process.cwd()}/public`));
 app.use('/public', express.static(`${__dirname}/public`));
 //console.log(process.cwd());
-app.get('/', function(req, res) {
+interface SendFileResponse<T> {
+  sendFile(path: T): void//sendFile: (path: string) => void
+}
+app.get('/', function<NONE>(_:NONE, res: SendFileResponse<string>) {
   //res.sendFile(process.cwd() + '/views/index.html');
   res.sendFile(__dirname + '/views/index.html');
 });
 
 // Your first API endpoint
-app.get('/api/hello', function(req, res) {
+interface Json<T> {
+  greeting: T;
+}
+type ApiHelloResponse<T> = {
+  json: (json: Json<T>)
+}
+app.get('/api/hello', function<NoSeUsa>(_: NoSeUsa, res: ApiHelloResponse<string>) {
   //res.json({ greeting: process.cwd(), a: __dirname });
   res.json({ greeting: 'hello API' });
 });
