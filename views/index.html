@@ -12,22 +12,49 @@
   </head>
 
   <body>
-    <h1>URL Shortener Microservice</h1>
+    <h1>URL<span class="highlighted">Shortener</span>Microservice</h1>
     <main>
       <section>
+        <h2>Create short URL</h2>
+        <pre>
+          <span class="highlight">POST</span> /api/shorturl
+        </pre>
         <form action="api/shorturl" method="POST">
-          <fieldset>
-            <legend>URL Shortener</legend>
-            <label for="url_input">URL:</label>
+            <label for="url_input">URL to shorten</label>
             <input id="url_input" type="text" name="url" placeholder="https://www.freecodecamp.org/" />
-            <input type="submit" value="POST URL" />
-          </fieldset>
+            <input type="submit" value="Shorten" />
         </form>
       </section>
+      <section>
+        <h2>Use short URL</h2>
+        <pre>
+          <span class="highlighted">GET</span> /apit/shorturl/:short_url
+        </pre>
+        <h3>This</h3>
+        <pre>
+          /api/shorturl/1
+        </pre>
+        <h3>Will redirect to:</h3>
+        <pre>
+          www.example.com
+        </pre>
+      </section>
     </main>
+    <!--
+    <section>
+      <form action="api/shorturl" method="POST">
+        <fieldset>
+          <legend>URL Shortener</legend>
+          <label for="url_input">URL:</label>
+          <input id="url_input" type="text" name="url" placeholder="https://www.freecodecamp.org/" />
+          <input type="submit" value="POST URL" />
+        </fieldset>
+      </form>
+    </section>
     <footer>
       <p>By <a href="https://www.freecodecamp.org/">freeCodeCamp</a></p>
     </footer>
+    -->
     <script type="text/javascript" src="../index.js"></script>
   </body>
 </html>

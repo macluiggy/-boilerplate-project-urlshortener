@@ -10,37 +10,15 @@ body {
 main {
   padding: 0;
   margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 h3 {
   margin-top: 30px;
 }
 
-
-
-.user-stories li {
-  margin-bottom: 1em;
-}
-
-a {
-  color: #2574a9;
-}
-
-form {
-  margin: 10px auto;
-  padding: 20px;
-  max-width: 600px;
-}
-
-label {
-  margin-right: 10px;
-}
-
-input {
-  padding: 5px;
-}
-
-input[type='text'] {
-  width: 220px;
-  text-align: center;
+section {
+  border: solid;
+  height: fit-content;
 }
