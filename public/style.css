@@ -1,5 +1,6 @@
 :root {
   --highlight: rgb(26, 221, 163);
+  --dark-gray: rgb(75, 75, 75);
 }
 body {
   font-family: Arial, sans-serif;
@@ -9,7 +10,9 @@ body {
   text-align: center;
   line-height: 1.4em;
 }
-
+h1 {
+  font-size:calc(10px + 2.00000vw);
+}
 main {
   padding: 0;
   margin-top: 40px;
@@ -25,17 +28,45 @@ h3 {
 }
 
 section {
-  border: solid;
+  border: solid var(--highlight);
+  border-radius: 0.4em;
   height: fit-content;
   padding: 1em;
+  text-align: left;
+  font-size: 0.99em;
 }
 section pre {
   white-space: pre-line;
-  background-color: rgb(75, 75, 75);
+  background-color: var(--dark-gray);
+  border-radius: 0.6em;
+  padding: 1.0em;
+}
+label {
+  font-weight: bolder;
 }
 section > form {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  /* border: solid; */
+  height:145px;
+}
+section > form > input#url_input {
+  height: 50px;
+  border-radius: 0.5em;
+  background-color: var(--dark-gray);
+  color: #fff;
+  border: none;
+  font-size: 1.05em;
+  padding: 0 1em;
+}
+a {
+  text-decoration: none;
+  color: white;
+  transition: color 0.5s ease;
+}
+a:hover {
+  color: var(--highlight);
 }
 .highlighted {
   color: var(--highlight);
@@ -43,6 +74,13 @@ section > form {
 .button {
   background-color: var(--highlight);
   border: none;
+  flex-basis: 2em;
+	flex-grow: 5px;
+	flex-shrink: 10px;
+  width: 6em;
+  padding: 0.9em;
+  border-radius: 0.5em;
+  cursor: pointer;
   /*
   width: 5em;
   padding: 1.5em;
