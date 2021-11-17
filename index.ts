@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 const path = require('path')
 
+const api_routes = require('./backend/api/api.route')
 //pilasd
 // Basic Configuration
 const port = process.env.PORT || 3000;
@@ -15,27 +16,28 @@ app.use(cors());
 
 //no es necesario poner /public, esto hara que no se reconozca el archivo
 //app.use('/public', express.static(`${process.cwd()}/public`));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'frontend', 'public')));
 //console.log(process.cwd());
 interface SendFileResponse<T> {
   sendFile(path: T): void//sendFile: (path: string) => void
 }
 app.get('/', function<NONE>(_:NONE, res: SendFileResponse<string>) {
   //res.sendFile(process.cwd() + '/views/index.html');
-  res.sendFile(path.join(__dirname, '/views/index.html'));
+  res.sendFile(path.join(__dirname, 'frontend', '/views/index.html'));
 });
 
 // Your first API endpoint
-interface Json<T> {
-  greeting: T;
-}
-type ApiHelloResponse<T> = {
-  json: (json: Json<T>) => void
-}
-app.get('/api/hello', function<NoSeUsa>(_: NoSeUsa, res: ApiHelloResponse<string>) {
-  //res.json({ greeting: process.cwd(), a: __dirname });
-  res.json({ greeting: 'hello API' });
-});
+// interface Json<T> {
+//   greeting: T;
+// }
+// type ApiHelloResponse<T> = {
+//   json: (json: Json<T>) => void
+// }
+// app.get('/api/hello', function<NoSeUsa>(_: NoSeUsa, res: ApiHelloResponse<string>) {
+//   //res.json({ greeting: process.cwd(), a: __dirname });
+//   res.json({ greeting: 'hello API' });
+// });
+app.use('/api/', api_routes)
 
 const uri = process.env.PW
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
