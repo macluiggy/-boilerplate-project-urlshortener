@@ -45,9 +45,9 @@ let urlSchema = new mongoose.Schema({
 
 let urlModel = mongoose.model('URL', urlSchema)
 //console.log(uri)
-const responseObject = {}
 
-let urlExtractor = function(url) {
+
+let urlExtractor = function<T extends string>(url: T) {
   let urlSplit;
   if (url.indexOf("https") > -1) {
     urlSplit = url.split("https://");
@@ -60,15 +60,23 @@ let urlExtractor = function(url) {
     return urlSplit[1].split("/")[0];
   }
 };
-
+type ApiShortUrlRequest = {
+  body: {
+    url: string
+  }
+}
+interface ResponseObject {
+  [index: string]: string
+}
+const responseObject: ResponseObject = {}
 app
   .use(bodyParser.urlencoded({ extended: false }))
-  .post('/api/shorturl', (req, res) => {
+  .post('/api/shorturl', (req: ApiShortUrlRequest, res) => {
     const { url } = req.body
     responseObject['original_url'] = url;
     let inputShort = 1
 
-    let test = urlExtractor(url)
+    let test = urlExtractor<string>(url)
     if (!test) {
       res.json({ error: 'invalid url' })
       return
