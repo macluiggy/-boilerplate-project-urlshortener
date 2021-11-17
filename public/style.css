@@ -17,7 +17,7 @@ main {
   padding: 0;
   margin-top: 40px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 400px));
   margin: auto;
   justify-content: center;
   gap: 1em;
