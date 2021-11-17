@@ -5,6 +5,7 @@ const cors = require('cors');
 const app = express();
 var bodyParser = require('body-parser');
 const mongoose = require('mongoose')
+const path = require('path')
 
 //pilasd
 // Basic Configuration
@@ -12,15 +13,16 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 
+//no es necesario poner /public, esto hara que no se reconozca el archivo
 //app.use('/public', express.static(`${process.cwd()}/public`));
-app.use('/public', express.static(`${__dirname}/public`));
+app.use(express.static(path.join(__dirname, 'public')));
 //console.log(process.cwd());
 interface SendFileResponse<T> {
   sendFile(path: T): void//sendFile: (path: string) => void
 }
 app.get('/', function<NONE>(_:NONE, res: SendFileResponse<string>) {
   //res.sendFile(process.cwd() + '/views/index.html');
-  res.sendFile(__dirname + '/views/index.html');
+  res.sendFile(path.join(__dirname, '/views/index.html'));
 });
 
 // Your first API endpoint
