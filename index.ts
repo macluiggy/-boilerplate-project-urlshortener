@@ -28,7 +28,7 @@ interface Json<T> {
   greeting: T;
 }
 type ApiHelloResponse<T> = {
-  json: (json: Json<T>)
+  json: (json: Json<T>) => void
 }
 app.get('/api/hello', function<NoSeUsa>(_: NoSeUsa, res: ApiHelloResponse<string>) {
   //res.json({ greeting: process.cwd(), a: __dirname });
@@ -65,13 +65,16 @@ type ApiShortUrlRequest = {
     url: string
   }
 }
+interface ApiShortUrlResponse {
+  json(JsonObject: ResponseObject): void
+}
 interface ResponseObject {
-  [index: string]: string
+  [index: string]: string | number
 }
 const responseObject: ResponseObject = {}
 app
   .use(bodyParser.urlencoded({ extended: false }))
-  .post('/api/shorturl', (req: ApiShortUrlRequest, res) => {
+  .post('/api/shorturl', (req: ApiShortUrlRequest, res: ApiShortUrlResponse) => {
     const { url } = req.body
     responseObject['original_url'] = url;
     let inputShort = 1
@@ -81,10 +84,13 @@ app
       res.json({ error: 'invalid url' })
       return
     }
+    interface Result {
+      short: number
+    }
     urlModel
           .findOne({})
           .sort({ short: 'desc' })
-          .exec((error, result) => {
+          .exec((error: string, result: Result) => {
             if (!error && result != undefined) {
               inputShort = result.short + 1;
             }
@@ -93,7 +99,7 @@ app
                 { original: url },
                 { original: url, short: inputShort },
                 { new: true, upsert: true },
-                (error, savedUrl) => {
+                (error: string, savedUrl: {short: number}) => {
                   if (!error) {
                     responseObject['short_url'] = savedUrl.short;
                     return res.json(responseObject);
@@ -108,10 +114,22 @@ app
     //let test = /https?:\/\/(www)?\.?.+\..+/gi.test(url)
   })
 
-app.get('/api/shorturl/:input', (req, res) => {
+interface ApiShortUrlInputRequest {
+  params: {
+    input: string;
+  }
+}
+type ApiShortUrlInputResponse = {
+  json: (json: { error: string }) => void;
+  redirect(original: string): void
+}
+interface Result {
+  original: string
+}
+app.get('/api/shorturl/:input', (req: ApiShortUrlInputRequest, res: ApiShortUrlInputResponse) => {
   let { input: inputShort } = req.params;
   urlModel
-        .findOne({ short: inputShort }, (error, result) => {
+        .findOne({ short: inputShort }, (error: string, result: Result) => {
           if(!error && result) {
             res.redirect(result.original)
           } else {
