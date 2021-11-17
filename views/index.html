@@ -3,6 +3,7 @@
 <html>
   <head>
     <title>URL Shortener Microservice | freeCodeCamp.org</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link
       rel="icon"
       type="image/png"
@@ -17,18 +18,18 @@
       <section>
         <h2>Create short URL</h2>
         <pre>
-          <span class="highlight">POST</span> /api/shorturl
+          <span class="highlighted">POST</span> /api/shorturl
         </pre>
         <form action="api/shorturl" method="POST">
             <label for="url_input">URL to shorten</label>
             <input id="url_input" type="text" name="url" placeholder="https://www.freecodecamp.org/" />
-            <input type="submit" value="Shorten" />
+            <input type="submit" value="Shorten" class="button"/>
         </form>
       </section>
       <section>
         <h2>Use short URL</h2>
         <pre>
-          <span class="highlighted">GET</span> /apit/shorturl/:short_url
+          <span class="highlighted">GET</span> /api/shorturl/:short_url
         </pre>
         <h3>This</h3>
         <pre>

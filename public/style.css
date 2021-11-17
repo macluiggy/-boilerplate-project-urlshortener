@@ -1,8 +1,11 @@
+:root {
+  --highlight: rgb(26, 221, 163);
+}
 body {
   font-family: Arial, sans-serif;
   font-size: 16px;
-  color: #222;
-  background-color: #fff;
+  color: #fff;
+  background-color: #111;
   text-align: center;
   line-height: 1.4em;
 }
@@ -11,7 +14,10 @@ main {
   padding: 0;
   margin-top: 40px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
+  margin: auto;
+  justify-content: center;
+  gap: 1em;
 }
 
 h3 {
@@ -21,4 +27,25 @@ h3 {
 section {
   border: solid;
   height: fit-content;
+  padding: 1em;
+}
+section pre {
+  white-space: pre-line;
+  background-color: rgb(75, 75, 75);
+}
+section > form {
+  display: flex;
+  flex-direction: column;
+}
+.highlighted {
+  color: var(--highlight);
+}
+.button {
+  background-color: var(--highlight);
+  border: none;
+  /*
+  width: 5em;
+  padding: 1.5em;
+  text-align: center;
+  */
 }
