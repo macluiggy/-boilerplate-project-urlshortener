@@ -38,6 +38,7 @@ app.get('/', function<NONE>(_:NONE, res: SendFileResponse<string>) {
 //   res.json({ greeting: 'hello API' });
 // });
 app.use('/api/', api_routes)
+app.use(bodyParser.urlencoded({ extended: false }))
 
 const uri = process.env.PW
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -77,7 +78,6 @@ interface ResponseObject {
 }
 const responseObject: ResponseObject = {}
 app
-  .use(bodyParser.urlencoded({ extended: false }))
   .post('/api/shorturl', (req: ApiShortUrlRequest, res: ApiShortUrlResponse) => {
     const { url } = req.body
     responseObject['original_url'] = url;
